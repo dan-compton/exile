@@ -3,8 +3,8 @@ package main
 import (
 	"strings"
 
-	"github.com/dan-compton/exile/pkg/plugins"
 	"github.com/pkg/errors"
+	"github.com/zenreach/exile/pkg/plugins"
 )
 
 type ExportedCaller struct{}

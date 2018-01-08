@@ -3,15 +3,15 @@ package main
 import (
 	"strings"
 
-	"github.com/dan-compton/exile/pkg/plugins"
 	"github.com/pkg/errors"
+	"github.com/zenreach/exile/pkg/plugins"
 )
 
 type UnexportedCaller struct{}
 
 // Namespace returns the key by which UnexportedCaller can be called in the "go" namespace.
 func (e *UnexportedCaller) Namespace() string {
-	return "exported"
+	return "unexported"
 }
 
 // Call decodes and checks the arguments, then calls the Unexported function.

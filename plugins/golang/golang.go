@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dan-compton/exile/pkg/plugins"
+	"github.com/zenreach/exile/pkg/plugins"
 )
 
 // PluginNamespace is the function namespace used for the plugin call function.
