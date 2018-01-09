@@ -1,0 +1,3 @@
+{{ template "VARS" }}
+
+package example

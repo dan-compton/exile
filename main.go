@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 
 	"flag"
@@ -15,19 +16,21 @@ import (
 )
 
 const (
-	DefaultTemplatePath      = "$GOPATH/src/github.com/dan-compton/exile/examples/"
-	DefaultTemplateExtension = ".t"
-	DefaultPluginsPath       = "$GOPATH/src/github.com/dan-compton/exile/plugins/"
-	DefaultPluginsExtension  = ".so"
+	DefaultTemplatePath     = "$GOPATH/src/github.com/dan-compton/exile/examples/"
+	DefaultPluginsPath      = "$GOPATH/src/github.com/dan-compton/exile/plugins/"
+	DefaultPluginsExtension = ".so"
 )
 
 var (
 	mappers      []plugins.Mapper
-	templatePath string
 	pluginsPath  string
-	packagePath  string
 	outPath      string
 	help         bool
+	templateRoot string
+	extensions   = map[internal.TemplateType]string{
+		internal.GlobalInclude: ".t_include",
+		internal.Renderable:    ".t",
+	}
 )
 
 func init() {
@@ -39,14 +42,12 @@ func init() {
 
 	flag.BoolVar(&help, "h", false, "print usage message")
 	flag.StringVar(&outPath, "o", pwd, fmt.Sprintln("Output path used when rendering templates.  Default is \"%s\".  Environmental variables are automatically expanded.", pwd))
-	flag.StringVar(&templatePath, "t", DefaultTemplatePath, fmt.Sprintf("The absolute path to the template root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultTemplatePath))
+	flag.StringVar(&templateRoot, "t", DefaultTemplatePath, fmt.Sprintf("The absolute path to the template root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultTemplatePath))
 	flag.StringVar(&pluginsPath, "p", DefaultPluginsPath, fmt.Sprintf("The absolute path to the plugins root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultPluginsPath))
 	flag.Parse()
 
-	// expand environmental variables for inputs.
-	templatePath = os.ExpandEnv(templatePath)
-	packagePath = os.ExpandEnv(packagePath)
 	pluginsPath = os.ExpandEnv(pluginsPath)
+	templateRoot = os.ExpandEnv(templateRoot)
 }
 
 func main() {
@@ -55,15 +56,12 @@ func main() {
 		os.Exit(0)
 	}
 
-	templates, err := internal.EnumerateTemplates(templatePath, DefaultTemplateExtension)
-	if err != nil {
-		log.Fatalln(errors.Wrapf(err, "enumerating templates in \"%s\"", templatePath))
-	}
-
+	// Load and open all go plugins from plugins path.
 	plugs, err := internal.LoadPlugins(pluginsPath, DefaultPluginsExtension)
 	if err != nil {
 		log.Fatalln(errors.Wrapf(err, "enumerating plugins in \"%s\"", pluginsPath))
 	}
+
 	for _, plug := range plugs {
 		if err != nil {
 			log.Fatalln(errors.Wrapf(err, "loading plugin"))
@@ -76,16 +74,39 @@ func main() {
 		mappers = append(mappers, m.(plugins.Mapper))
 	}
 
-	for _, t := range templates {
-		t, err := t.Parse(mappers...)
+	// Get a slice of template paths for each template type.
+	templatePaths, err := internal.EnumerateTemplates(templateRoot, extensions)
+	if err != nil {
+		log.Fatalln(errors.Wrap(err, "enumerating templates"))
+	}
+
+	// Get a slice of template path -> renderable template
+	templates, err := internal.ParseTemplates(templateRoot, templatePaths, extensions, mappers...)
+	if err != nil {
+		log.Fatalln(errors.Wrap(err, "parsing templates"))
+	}
+
+	// render the templates to file
+	for relOut, t := range templates {
+		ofs := filepath.Join(outPath, relOut)
+		log.Println("RENDERING TEMPLATE", ofs)
+
+		op := path.Dir(ofs)
+		err := os.MkdirAll(op, os.ModePerm)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln(errors.Wrap(err, "creating folders for template output"))
 		}
 
-		log.Println("RENDERING TEMPLATE", filepath.Join(outPath, t.RelativeOutputPath()))
-		err = t.Render(outPath)
+		ofn := filepath.Base(ofs)
+		of, err := os.Create(ofs)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln(errors.Wrap(err, "creating file for template output"))
+		}
+		defer of.Close()
+
+		err = t.ExecuteTemplate(of, ofn+extensions[internal.Renderable], &struct{}{})
+		if err != nil {
+			log.Fatalln(errors.Wrap(err, "executing template"))
 		}
 	}
 	log.Println("DONE")

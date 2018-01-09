@@ -1,3 +1,0 @@
-package examples
-
-var ProjectSetting
