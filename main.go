@@ -6,10 +6,15 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 
 	"flag"
 
 	"github.com/dan-compton/exile/internal"
+	"github.com/dan-compton/exile/internal/plugins/conventions"
+	"github.com/dan-compton/exile/internal/plugins/env"
+	"github.com/dan-compton/exile/internal/plugins/golang"
+	"github.com/dan-compton/exile/internal/plugins/strings"
 	"github.com/dan-compton/exile/pkg/plugins"
 
 	"github.com/pkg/errors"
@@ -56,22 +61,31 @@ func main() {
 		os.Exit(0)
 	}
 
-	// Load and open all go plugins from plugins path.
-	plugs, err := internal.LoadPlugins(pluginsPath, DefaultPluginsExtension)
-	if err != nil {
-		log.Fatalln(errors.Wrapf(err, "enumerating plugins in \"%s\"", pluginsPath))
-	}
-
-	for _, plug := range plugs {
+	// XXX hack around lack of darwin support for now.
+	switch runtime.GOOS {
+	case "linux":
+		// Load and open all go plugins from plugins path.
+		plugs, err := internal.LoadPlugins(pluginsPath, DefaultPluginsExtension)
 		if err != nil {
-			log.Fatalln(errors.Wrapf(err, "loading plugin"))
-		}
-		m, err := plug.Lookup("PluginMappers")
-		if err != nil {
-			log.Fatalln(errors.Wrapf(err, "looking up plugin symbol PluginMappers"))
+			log.Fatalln(errors.Wrapf(err, "enumerating plugins in \"%s\"", pluginsPath))
 		}
 
-		mappers = append(mappers, m.(plugins.Mapper))
+		for _, plug := range plugs {
+			if err != nil {
+				log.Fatalln(errors.Wrapf(err, "loading plugin"))
+			}
+			m, err := plug.Lookup("PluginMappers")
+			if err != nil {
+				log.Fatalln(errors.Wrapf(err, "looking up plugin symbol PluginMappers"))
+			}
+
+			mappers = append(mappers, m.(plugins.Mapper))
+		}
+	default:
+		mappers = append(mappers, env.PluginMappers)
+		mappers = append(mappers, conventions.PluginMappers)
+		mappers = append(mappers, golang.PluginMappers)
+		mappers = append(mappers, strings.PluginMappers)
 	}
 
 	// Get a slice of template paths for each template type.

@@ -7,8 +7,8 @@ import (
 )
 
 // NewMappers returns a new Mappers of provided namespace.
-func NewMappers(namespace string) Mappers {
-	return Mappers{
+func NewMappers(namespace string) *Mappers {
+	return &Mappers{
 		callers:   make(map[string]Caller),
 		namespace: namespace,
 	}
