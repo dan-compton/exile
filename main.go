@@ -21,6 +21,7 @@ import (
 )
 
 const (
+	DefaultProjectName      = "default_service"
 	DefaultTemplatePath     = "$GOPATH/src/github.com/dan-compton/exile/examples/"
 	DefaultPluginsPath      = "$GOPATH/src/github.com/dan-compton/exile/plugins/"
 	DefaultPluginsExtension = ".so"
@@ -29,6 +30,7 @@ const (
 var (
 	mappers      []plugins.Mapper
 	pluginsPath  string
+	projectName  string
 	outPath      string
 	help         bool
 	templateRoot string
@@ -45,11 +47,14 @@ func init() {
 		os.Exit(0)
 	}
 
-	flag.BoolVar(&help, "h", false, "print usage message")
-	flag.StringVar(&outPath, "o", pwd, fmt.Sprintln("Output path used when rendering templates.  Default is \"%s\".  Environmental variables are automatically expanded.", pwd))
-	flag.StringVar(&templateRoot, "t", DefaultTemplatePath, fmt.Sprintf("The absolute path to the template root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultTemplatePath))
-	flag.StringVar(&pluginsPath, "p", DefaultPluginsPath, fmt.Sprintf("The absolute path to the plugins root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultPluginsPath))
+	flag.BoolVar(&help, "help", false, "print usage message")
+	flag.StringVar(&projectName, "name", DefaultProjectName, fmt.Sprintln("project name, default is %s and is accessible through the PROJECT_NAME environmental variable.", DefaultProjectName))
+	flag.StringVar(&outPath, "out", pwd, fmt.Sprintln("Output path used when rendering templates.  Default is \"%s\".  Environmental variables are automatically expanded.", pwd))
+	flag.StringVar(&templateRoot, "template", DefaultTemplatePath, fmt.Sprintf("The absolute path to the template root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultTemplatePath))
+	flag.StringVar(&pluginsPath, "plugins", DefaultPluginsPath, fmt.Sprintf("The absolute path to the plugins root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultPluginsPath))
 	flag.Parse()
+
+	os.Setenv("PROJECT_NAME", projectName)
 
 	pluginsPath = os.ExpandEnv(pluginsPath)
 	templateRoot = os.ExpandEnv(templateRoot)
