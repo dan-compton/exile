@@ -11,10 +11,6 @@ import (
 	"flag"
 
 	"github.com/dan-compton/funk/internal"
-	"github.com/dan-compton/funk/internal/plugins/conventions"
-	"github.com/dan-compton/funk/internal/plugins/env"
-	"github.com/dan-compton/funk/internal/plugins/golang"
-	"github.com/dan-compton/funk/internal/plugins/strings"
 	"github.com/dan-compton/funk/pkg/plugins"
 
 	"github.com/pkg/errors"
@@ -86,12 +82,7 @@ func main() {
 
 			mappers = append(mappers, m.(plugins.Mapper))
 		}
-	default:
-		mappers = append(mappers, env.PluginMappers)
-		mappers = append(mappers, conventions.PluginMappers)
-		mappers = append(mappers, golang.PluginMappers)
-		mappers = append(mappers, strings.PluginMappers)
-	}
+  }
 
 	// Get a slice of template paths for each template type.
 	templatePaths, err := internal.EnumerateTemplates(templateRoot, extensions)
