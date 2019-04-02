@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"github.com/zenreach/funk/pkg/plugins"
+	"github.com/dan-compton/funk/pkg/plugins"
 )
 
 // GetCaller provides a Call method to get values from the environment.

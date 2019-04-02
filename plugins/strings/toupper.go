@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/zenreach/funk/pkg/plugins"
+	"github.com/dan-compton/funk/pkg/plugins"
 )
 
 type ToUpperCaller struct{}
