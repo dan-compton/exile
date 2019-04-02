@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"github.com/zenreach/exile/pkg/plugins"
+	"github.com/zenreach/funk/pkg/plugins"
 )
 
 // SetCaller provides a Call method to set values from the environment.

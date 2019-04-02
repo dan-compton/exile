@@ -10,20 +10,20 @@ import (
 
 	"flag"
 
-	"github.com/dan-compton/exile/internal"
-	"github.com/dan-compton/exile/internal/plugins/conventions"
-	"github.com/dan-compton/exile/internal/plugins/env"
-	"github.com/dan-compton/exile/internal/plugins/golang"
-	"github.com/dan-compton/exile/internal/plugins/strings"
-	"github.com/dan-compton/exile/pkg/plugins"
+	"github.com/dan-compton/funk/internal"
+	"github.com/dan-compton/funk/internal/plugins/conventions"
+	"github.com/dan-compton/funk/internal/plugins/env"
+	"github.com/dan-compton/funk/internal/plugins/golang"
+	"github.com/dan-compton/funk/internal/plugins/strings"
+	"github.com/dan-compton/funk/pkg/plugins"
 
 	"github.com/pkg/errors"
 )
 
 const (
 	DefaultProjectName      = "default_service"
-	DefaultTemplatePath     = "$GOPATH/src/github.com/dan-compton/exile/examples/"
-	DefaultPluginsPath      = "$GOPATH/src/github.com/dan-compton/exile/plugins/"
+	DefaultTemplatePath     = "$GOPATH/src/github.com/dan-compton/funk/examples/"
+	DefaultPluginsPath      = "$GOPATH/src/github.com/dan-compton/funk/plugins/"
 	DefaultPluginsExtension = ".so"
 )
 

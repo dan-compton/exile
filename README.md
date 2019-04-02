@@ -1,53 +1,68 @@
-# github.com/dan-compton/exile
+# github.com/dan-compton/Funk
 
-Exile (pronounced ex~~L~~ile) is a wholly re-written, language-agnostic, and generic version of [Lile](https://github.com/lileio/lile).  In short, it is a _simple_ code-generation framework built on go templates.
+## FUNK (pronounced FUNC) is a _simple_ code-generation framework built on go templates.  
 
-### Installation
+[x]  Pluggable (plugins are collections of functions)
+[x]  Simple interface for plugins to implement
+[x]  Examples
+[x]  Great at parties
 
-**NOTE**  Due to the inclusion of golang plugins, the build process is not ensured to be stable outside of a linux-based build-host.  Plugins are currently not supported on windows ([issue](https://github.com/golang/go/issues/19282)).  
 
-* Install the latest version of go (>=1.9.2).  Older versions may work so give it a shot.
-* Use a GOPATH.  If you're doing something weird, it's likely that you will break exile.
-* Install via `go get github.com/dan-compton/exile`
+## Funk's core argument and ultimate goal is to demonstrate that code-generation is tool that can be leveraged not only to reduce the cost of duplicated effort, but also to:
 
-### Generating The Examples
-
-To generate the examples, `cd` to the examples directory and run `exile` as shown below.
-
-```
-user@host> cd $GOPATH/src/github.com/dan-compton/exile
-user@host> exile 
-RENDERING TEMPLATE => /home/dc/work/src/github.com/dan-compton/exile/examples/main.go
-DONE
-user@host>
-```
-
-### Template Helpers
-
-For template-metaprogramming to be accessible and language-agnostic, template helpers must be provided for source code transformation.  Go provides some of these functions by default as well as a way to register additional functions in the form of [template.FuncMap](https://golang.org/src/text/template/funcs.go?s=1000:1035#L20).
-
-**TODO** Add additional details regarding the interfaces and helpers exported for pluggable template helpers.
-
-## Motivation
-
-Exile's core argument and ultimate goal is to demonstrate that code-generation is tool that can be leveraged not only to reduce the cost of duplicated effort, but also to:
+> Of course, this is the argument made by all metaprogramming languages -- like *jsonnet*.  Unlike jsonnet, Funk uses go-templates to provide a clear transformation and 
+> dependency hierarchy with clear seperation between compile-time and runtime transformations.  Unlike C metaprogramming, no overhead is added to compilation outside of 
+> plugin compilation -- nor are your source files littered with metastatements.  Note that this would be possible to implement in jsonnet, and the results would be catastrophic.
 
 * **Enforce standards** across a code-base through the [principle of least effort](https://en.wikipedia.org/wiki/Principle_of_least_effort).
 * **Reduce time spent** on discussions around implementation details and choices of standard libraries by moving those discussions to the template-level.
 * **Codify and convey knowledge** around how a team thinks a solution should look.
-* Allow technical decision-owners to **hide behind-the-scenes changes to standard libraries**
+* **Allow technical decision-owners to hide behind-the-scenes changes to standard libraries**
 * **Encourage a team to define a set of core-competencies** through templating solutions to problems they solve frequently.
 
-## Contributing
+## Generating The Examples
 
-Open a PR. 
+A handful of examples are provided along with the repo.  These include string transformation functions like camel_to_snake and 
+transformation functions for go packages like exported. You'll pick it up quickly -- it's easy. 
 
-**TODO** Code and Commit style information.
+```
+$ cd $GOPATH/src/github.com/dan-compton/Funk
+$ Funk 
+$ RENDERING TEMPLATE => /home/dc/work/src/github.com/dan-compton/Funk/examples/main.go
+$ DONE
+user@host>
+```
 
-## Authors
 
-* **Dan Compton** - *Initial work* - [dan-compton](https://github.com/dan-compton)
+## Interfaces to implement...
 
-## License
+All plugged funcs must implement the Caller interface,
+which simply defines the function's namesspace and possible
+return values.  Since we're operating on strings, the retval will
+always be a string.
 
-This project is licensed under the BSD 3-clause "New" or "Revised" License - see the [LICENSE.md](LICENSE.md) file for details
+```
+type Caller interface {
+	Call(...interface{}) (string, error)
+	Namespace() string
+}
+```
+
+You'll probably want to define your own namespace as well. 
+You can do this with the mapper interface and `NewMappers(namespace string)` helper.
+These allow you to bundle your callables (that implement Caller) into a single, referencable
+namespace :)
+
+A Mapper defines a mapping from a string transformation function to a template.FuncMap.
+type Mapper interface {
+	Map(t template.FuncMap)
+}
+
+## Questions/Concerns/Comments/Improvements
+
+Simply open an issue.  I'm not picky on stylistic guidelines for issues
+nor contributed code.  Just ensure that what you contribute conforms
+to go's [CodeReviewComments](https://github.com/golang/go/wiki/CodeReviewComments)!
+
+If it does not, then I will not review it.  If you find violations in this codebase,
+please open an issue.

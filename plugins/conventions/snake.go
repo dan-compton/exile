@@ -4,7 +4,7 @@ import (
 	"regexp"
 
 	"github.com/pkg/errors"
-	"github.com/zenreach/exile/pkg/plugins"
+	"github.com/zenreach/funk/pkg/plugins"
 )
 
 // SnakeCaller provides a Call method to set values from the environment.

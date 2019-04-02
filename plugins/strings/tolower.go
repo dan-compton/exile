@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/zenreach/exile/pkg/plugins"
+	"github.com/zenreach/funk/pkg/plugins"
 )
 
 type ToLowerCaller struct{}

@@ -8,7 +8,7 @@ import (
 
 	"text/template"
 
-	"github.com/dan-compton/exile/pkg/plugins"
+	"github.com/dan-compton/funk/pkg/plugins"
 	"github.com/pkg/errors"
 )
 
