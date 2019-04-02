@@ -1,5 +1,3 @@
-# github.com/dan-compton/Funk
-
 ## FUNK (pronounced FUNC) is a _simple_ code-generation framework built on go templates.  
 
 [x]  Pluggable (plugins are collections of functions)
