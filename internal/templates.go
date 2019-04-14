@@ -74,7 +74,7 @@ func ParseTemplates(root string, templatePaths map[TemplateType][]string, extens
 		// determine template filename by removing template suffix.
 		of := filepath.Base(strings.TrimSuffix(filepath.Base(renderablePath), ext))
 		if of == "" {
-			return nil, errors.Errorf("template file %s has no output filename")
+			return nil, errors.Errorf("template file %s has no output filename", rp)
 		}
 
 		// join the relative path and output filename to get complete relative output.

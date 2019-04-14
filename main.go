@@ -48,8 +48,8 @@ func init() {
 	}
 
 	flag.BoolVar(&help, "help", false, "print usage message")
-	flag.StringVar(&projectName, "name", DefaultProjectName, fmt.Sprintln("project name, default is %s and is accessible through the PROJECT_NAME environmental variable.", DefaultProjectName))
-	flag.StringVar(&outPath, "out", pwd, fmt.Sprintln("Output path used when rendering templates.  Default is \"%s\".  Environmental variables are automatically expanded.", pwd))
+	flag.StringVar(&projectName, "name", DefaultProjectName, fmt.Sprintf("project name, default is \"%s\" and is accessible through the PROJECT_NAME environmental variable\n.", DefaultProjectName))
+	flag.StringVar(&outPath, "out", pwd, fmt.Sprintf("Output path used when rendering templates.  Default is \"%s\".  Environmental variables are automatically expanded\n.", pwd))
 	flag.StringVar(&templateRoot, "template", DefaultTemplatePath, fmt.Sprintf("The absolute path to the template root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultTemplatePath))
 	flag.StringVar(&pluginsPath, "plugins", DefaultPluginsPath, fmt.Sprintf("The absolute path to the plugins root/base directory. Default is \"%s\".  Environmental variables are automatically expanded.", DefaultPluginsPath))
 	flag.Parse()

@@ -61,5 +61,4 @@ func (e *CamelCaller) Snake(from string, s string) (string, error) {
 	default:
 		return "", errors.Errorf("unknown convention %s", from)
 	}
-	return s, nil
 }
