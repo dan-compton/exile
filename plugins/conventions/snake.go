@@ -3,8 +3,8 @@ package main
 import (
 	"regexp"
 
-	"github.com/pkg/errors"
 	"github.com/dan-compton/funk/pkg/plugins"
+	"github.com/pkg/errors"
 )
 
 // SnakeCaller provides a Call method to set values from the environment.

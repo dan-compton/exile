@@ -22,7 +22,7 @@ const (
 // EnumerateTemplates returns a mapping from template type to []string of paths.
 func EnumerateTemplates(root string, extensions map[TemplateType]string) (map[TemplateType][]string, error) {
 	templates := make(map[TemplateType][]string)
-	for t, _ := range extensions {
+	for t := range extensions {
 		_, ok := templates[t]
 		if !ok {
 			templates[t] = []string{}

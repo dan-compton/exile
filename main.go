@@ -82,7 +82,7 @@ func main() {
 
 			mappers = append(mappers, m.(plugins.Mapper))
 		}
-  }
+	}
 
 	// Get a slice of template paths for each template type.
 	templatePaths, err := internal.EnumerateTemplates(templateRoot, extensions)

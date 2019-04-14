@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"unicode"
 
-	"github.com/pkg/errors"
 	"github.com/dan-compton/funk/pkg/plugins"
+	"github.com/pkg/errors"
 )
 
 // CamelCaller provides a Call method to set values from the environment.

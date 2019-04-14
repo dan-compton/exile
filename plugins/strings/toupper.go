@@ -3,8 +3,8 @@ package main
 import (
 	"strings"
 
-	"github.com/pkg/errors"
 	"github.com/dan-compton/funk/pkg/plugins"
+	"github.com/pkg/errors"
 )
 
 type ToUpperCaller struct{}

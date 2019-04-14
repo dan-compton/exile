@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/pkg/errors"
 	"github.com/dan-compton/funk/pkg/plugins"
+	"github.com/pkg/errors"
 )
 
 // SetCaller provides a Call method to set values from the environment.
