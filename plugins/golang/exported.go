@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ExportedCaller describes an exported go call.
 type ExportedCaller struct{}
 
 // Namespace returns the key by which ExportedCaller can be called in the "go" namespace.

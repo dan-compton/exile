@@ -17,13 +17,9 @@ import (
 )
 
 const (
-  // DefaultProjectName is the name of the service or project to be generated.
 	DefaultProjectName      = "default_service"
-  // DefaultTemplatePath is the path which contains default templates for this project.
 	DefaultTemplatePath     = "$GOPATH/src/github.com/dan-compton/funk/examples/"
-  // DefaultPluginsPath is the path which contains the standard project plugins.
 	DefaultPluginsPath      = "$GOPATH/src/github.com/dan-compton/funk/plugins/"
-  // DefaultPluginsExtension is the plugin extension. .so for linux 
 	DefaultPluginsExtension = ".so"
 )
 

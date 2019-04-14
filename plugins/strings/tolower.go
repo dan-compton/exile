@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ToLowerCaller converts a string to lower case.
 type ToLowerCaller struct{}
 
 // Namespace returns the key by which ToLowerCaller can be called in the "go" namespace.

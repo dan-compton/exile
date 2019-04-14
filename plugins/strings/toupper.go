@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ToUpperCaller converts a string to upper case.
 type ToUpperCaller struct{}
 
 // Namespace returns the key by which ToUpperCaller can be called in the "go" namespace.

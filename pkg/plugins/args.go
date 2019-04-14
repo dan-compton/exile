@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// Args returns a slice of arguments from one or more interfaces.
+// NewArgs returns a slice of arguments from one or more interfaces.
 func NewArgs(is ...interface{}) Args {
 	var args []*Arg
 	for n := range is {
