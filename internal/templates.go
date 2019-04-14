@@ -16,9 +16,9 @@ import (
 type TemplateType = int
 
 const (
-  // GlobalInclude is a globally included template.
+	// GlobalInclude is a globally included template.
 	GlobalInclude TemplateType = iota
-  // Renderable is a renderable template.
+	// Renderable is a renderable template.
 	Renderable
 )
 
